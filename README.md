@@ -8,7 +8,7 @@
   [![Flask](https://img.shields.io/badge/Flask-2.2%2B-black?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
   [![IBM Watson NLP](https://img.shields.io/badge/IBM_Watson-NLP_Workflow-052FAD?style=for-the-badge&logo=ibm&logoColor=white)](https://www.ibm.com/watson)
   [![Pylint](https://img.shields.io/badge/Pylint-10.00%2F10-brightgreen?style=for-the-badge&logo=python&logoColor=white)](https://pylint.org/)
-  [![Tests](https://img.shields.io/badge/Tests-Passing-success?style=for-the-badge&logo=checkmarx&logoColor=white)](https://github.com/RanithuDewage/ibm-final-project-flask-ai)
+  [![Tests](https://img.shields.io/badge/Tests-Passing-success?style=for-the-badge&logo=checkmarx&logoColor=white)](https://github.com/RanithuDewage/emotion-detection-system-1.0)
   [![License](https://img.shields.io/badge/License-Apache_2.0-orange?style=for-the-badge&logo=apache&logoColor=white)](LICENSE)
 
   <p align="center">
@@ -116,8 +116,8 @@ emotion-detection-system/
 ### 2. Clone the Repository
 
 ```bash
-git clone https://github.com/RanithuDewage/ibm-final-project-flask-ai.git
-cd ibm-final-project-flask-ai
+git clone https://github.com/RanithuDewage/emotion-detection-system-1.0.git
+cd emotion-detection-system-1.0
 ```
 
 ### 3. Set Up Virtual Environment
