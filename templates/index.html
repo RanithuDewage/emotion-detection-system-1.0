@@ -1,32 +1,149 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="./static/mywebscript.js"></script>
-    <style>
-        .center-heading {
-            text-align: center;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Emotion Detection System | IBM Watson NLP</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Custom Modern Stylesheet -->
+    <link rel="stylesheet" href="./static/style.css">
+    <!-- Scripts -->
+    <script src="./static/mywebscript.js" defer></script>
 </head>
 <body>
-    <div class="card">
-        <div class="card-body">
-            <h1 class="center-heading">NLP - Emotion Detection</h1> 
-            <div style="padding: 25px 25px 25px 25px;">
-            <h2 class="mb-3">
-                <label class="form-label">Please enter the text to be analyzed</label>
-                <input type="textarea" class="form-control" id="textToAnalyze">
-            </h2>
+    <!-- Ambient Floating Orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
 
-            <div style="padding: 25px 25px 25px 25px;">
-                <button onclick="RunSentimentAnalysis()" class="btn btn-secondary">Run Sentiment Analysis</button>
+    <div class="container">
+        <!-- Header -->
+        <header class="header-section">
+            <div class="badge-tag">
+                <span>⚡</span> Powered by IBM Watson NLP &amp; Flask
             </div>
-            <div style="padding: 25px 25px 25px 25px;"></div>
-            <h2 class="mb-3">
-                <label class="form-label">Result of Emotion Detection</label>
-            </h2>
+            <h1 class="main-title">AI Emotion Detection</h1>
+            <p class="subtitle">Real-time deep linguistic sentiment &amp; fine-grained emotion analysis</p>
+        </header>
 
-            <div id="system_response" style="padding: 25px 25px 25px 25px;"></div>
-        </div>
+        <!-- Main Card -->
+        <main class="glass-card">
+            <!-- Text Input -->
+            <label for="textToAnalyze" class="input-label">Enter text statement to analyze:</label>
+            <textarea id="textToAnalyze" class="text-input" placeholder="Type or paste your statement here... (e.g. 'I am delighted with the project results!')"></textarea>
+
+            <!-- Quick Samples -->
+            <div class="quick-samples">
+                <span class="quick-title">Quick tests:</span>
+                <button type="button" class="sample-chip" onclick="setSample('I am glad this happened')">😄 Joy</button>
+                <button type="button" class="sample-chip" onclick="setSample('I am really mad about this')">😠 Anger</button>
+                <button type="button" class="sample-chip" onclick="setSample('I feel disgusted just hearing about this')">🤢 Disgust</button>
+                <button type="button" class="sample-chip" onclick="setSample('I am really afraid that this will happen')">😨 Fear</button>
+                <button type="button" class="sample-chip" onclick="setSample('I am so sad about this')">😢 Sadness</button>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="actions-row">
+                <button id="runBtn" onclick="RunSentimentAnalysis()" class="btn-primary">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    <span>Run Sentiment Analysis</span>
+                </button>
+                <button type="button" onclick="clearInput()" class="btn-secondary">Clear</button>
+            </div>
+
+            <!-- Animated Loader -->
+            <div id="loader" class="loader-wrapper">
+                <div class="spinner"></div>
+                <p style="color: var(--text-secondary); font-size: 0.9rem;">Analyzing emotion patterns...</p>
+            </div>
+
+            <!-- Visual Results Display -->
+            <section id="resultsSection" class="results-card">
+                <!-- Dominant Emotion Spotlight Banner -->
+                <div class="dominant-banner">
+                    <div class="dominant-left">
+                        <div id="dominantEmoji" class="dominant-emoji">✨</div>
+                        <div>
+                            <div class="dominant-title">Dominant Emotion</div>
+                            <div id="dominantName" class="dominant-name">Joy</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fine-Grained Emotion Meter Breakdown -->
+                <div class="emotion-grid">
+                    <div class="emotion-row">
+                        <div class="emotion-meta">
+                            <span class="emotion-label">😠 Anger</span>
+                            <span id="score_anger">0.0%</span>
+                        </div>
+                        <div class="progress-track">
+                            <div id="fill_anger" class="progress-fill fill-anger"></div>
+                        </div>
+                    </div>
+
+                    <div class="emotion-row">
+                        <div class="emotion-meta">
+                            <span class="emotion-label">🤢 Disgust</span>
+                            <span id="score_disgust">0.0%</span>
+                        </div>
+                        <div class="progress-track">
+                            <div id="fill_disgust" class="progress-fill fill-disgust"></div>
+                        </div>
+                    </div>
+
+                    <div class="emotion-row">
+                        <div class="emotion-meta">
+                            <span class="emotion-label">😨 Fear</span>
+                            <span id="score_fear">0.0%</span>
+                        </div>
+                        <div class="progress-track">
+                            <div id="fill_fear" class="progress-fill fill-fear"></div>
+                        </div>
+                    </div>
+
+                    <div class="emotion-row">
+                        <div class="emotion-meta">
+                            <span class="emotion-label">😄 Joy</span>
+                            <span id="score_joy">0.0%</span>
+                        </div>
+                        <div class="progress-track">
+                            <div id="fill_joy" class="progress-fill fill-joy"></div>
+                        </div>
+                    </div>
+
+                    <div class="emotion-row">
+                        <div class="emotion-meta">
+                            <span class="emotion-label">😢 Sadness</span>
+                            <span id="score_sadness">0.0%</span>
+                        </div>
+                        <div class="progress-track">
+                            <div id="fill_sadness" class="progress-fill fill-sadness"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Standard System Response Box (Required for IBM Course Evaluation) -->
+                <div class="raw-output-card">
+                    <div class="raw-header">
+                        <div class="terminal-dot dot-red"></div>
+                        <div class="terminal-dot dot-yellow"></div>
+                        <div class="terminal-dot dot-green"></div>
+                        <span class="terminal-title">System Response (IBM Watson Output)</span>
+                    </div>
+                    <div id="system_response"></div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <p>Developed with ❤️ by <a href="https://github.com/RanithuDewage" target="_blank" rel="noopener">Ranithu Dewage</a> &bull; IBM AI Developer Professional Project</p>
+        </footer>
     </div>
 </body>
+</html>
